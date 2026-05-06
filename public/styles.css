@@ -1,0 +1,654 @@
+/* NomadSpot Taiwan — design tokens lifted from Figma */
+:root {
+  --color-bg: #FDFDF1;
+  --color-surface: #FFFFFF;
+  --color-label: #171719;
+  --color-label-alt: #37383C;
+  --color-line: #E1E2E4;
+  --color-line-soft: rgba(112, 115, 124, 0.16);
+  --color-primary: #864537;
+  --color-primary-strong: #763F26;
+  --color-primary-heavy: #5E321E;
+  --color-accent: #E0745C;
+  --color-caution: #B35C49;
+  --color-blue: #4F95FF;
+
+  --r-xs: 8px; --r-s: 12px; --r-m: 16px; --r-l: 24px; --r-xl: 48px;
+
+  --font-sans: 'Rubik', -apple-system, BlinkMacSystemFont, 'Noto Sans', Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-label);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+
+/* --- Header (consistent banner across all pages) --- */
+.header {
+  height: 68px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--color-bg);
+  border-bottom: 1px solid rgba(112, 115, 124, 0.08);
+}
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 20px; font-weight: 600; letter-spacing: -0.3px;
+}
+/* Coffee logo mark — windows into /assets/index.svg via CSS cropping.
+   The source artwork is unmodified; we just pan the native 1920×1080
+   image inside a 36×36 viewport to show the coffee glyph at top-left. */
+.logo-mark {
+  width: 36px; height: 36px;
+  background-image: url('/assets/index.svg');
+  background-repeat: no-repeat;
+  background-size: 1920px 1080px;
+  background-position: -22px -14px;
+  flex-shrink: 0;
+}
+.logo-mark::before { content: none; }
+.logo-text strong { color: var(--color-primary-strong); }
+
+/* --- Footer --- */
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 13px;
+  color: var(--color-label-alt);
+}
+.footer .brand { color: var(--color-accent); margin-left: 8px; }
+
+/* ============================================================
+   Intro screen
+   ============================================================ */
+.intro-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  min-height: calc(100vh - 128px);
+  padding: 0 160px;
+  gap: 64px;
+}
+.intro-content h1 {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -2.5px;
+  color: var(--color-blue);
+  margin: 0 0 24px;
+}
+.intro-content p {
+  font-size: 16px;
+  color: var(--color-label-alt);
+  max-width: 540px;
+  margin: 0 0 32px;
+}
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  transition: background 120ms ease, transform 120ms ease;
+}
+.btn-primary:hover { background: var(--color-primary-strong); transform: translateY(-1px); }
+
+/* Taiwan illustration is windowed from /assets/index.svg via CSS cropping.
+   The source SVG (1920×1080) is rendered at native scale and panned so only
+   the right-hand Taiwan portion is visible. The artwork itself is untouched. */
+.intro-illustration {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  aspect-ratio: 800 / 1080;
+  margin-left: auto;
+  background-image: url('/assets/index.svg');
+  background-repeat: no-repeat;
+  background-position: right center;
+  /* 1920 / 800 = 2.4 → render the SVG at 240% width so only the right
+     ~800px (the Taiwan column) fits inside the viewport. */
+  background-size: 240% 100%;
+}
+.taiwan-svg { display: none; }   /* legacy hook, no-op if any markup remains */
+
+/* ============================================================
+   Map screen (Desktop base styles)
+   ============================================================ */
+.map-shell {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 548px;
+}
+/* On the map page the header floats over the map but stays fixed/sticky.
+   z-index: 1100 keeps it above Leaflet panes (max ~700) and the open
+   detail/filter panels (1100 reserves the topmost layer for the logo). */
+.map-shell .header {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 1200;
+  background: rgba(253, 253, 241, 0.94);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(112, 115, 124, 0.08);
+}
+
+.map-canvas {
+  position: relative;
+  background: #f3f3ee;
+  overflow: hidden;
+}
+/* Desaturate the basemap slightly to match the muted Figma look */
+#leaflet-map .leaflet-tile-pane { filter: saturate(0.55) brightness(1.02); }
+#leaflet-map { position: absolute; inset: 0; }
+
+.aside {
+  background: var(--color-bg);          /* unify with index.html cream */
+  border-left: 1px solid var(--color-line);
+  display: flex; flex-direction: column;
+  padding: 24px;
+  padding-top: 92px;            /* leave room for the fixed header */
+  overflow: hidden;
+  font-family: var(--font-sans);
+}
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 12px;
+}
+.panel-header h2 {
+  margin: 0; font-size: 22px; font-weight: 700;
+  letter-spacing: -1.5px;
+}
+/* Full-width filter trigger (matches the card width below) */
+.btn-filter {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--color-bg);
+  color: var(--color-primary-strong);
+  border: 1px solid var(--color-line);
+  border-radius: var(--r-s);
+  padding: 12px 16px;
+  font-weight: 600; font-size: 14px;
+  margin-bottom: 16px;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.btn-filter:hover { background: #f5f1e6; border-color: var(--color-primary); }
+.btn-filter .ic { font-size: 16px; }
+.btn-filter .badge {
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 11px;
+  border-radius: 999px;
+  padding: 2px 8px;
+  display: none;
+}
+.btn-filter.active .badge { display: inline-block; }
+.entry-list {
+  margin-top: 16px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  display: flex; flex-direction: column; gap: 16px;
+  padding-right: 4px;
+}
+.entry-list::-webkit-scrollbar { width: 6px; }
+.entry-list::-webkit-scrollbar-thumb { background: var(--color-line); border-radius: 3px; }
+
+/* --- Cafe card --- */
+.cafe-card {
+  display: flex; flex-direction: column;
+  flex-shrink: 0;
+  border-radius: var(--r-m);
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.cafe-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.cafe-card .thumb {
+  position: relative;
+  width: 100%; aspect-ratio: 16/10;
+  background: #ddd center/cover no-repeat;
+  background-color: #efece4;
+  background-image: linear-gradient(135deg, #efece4 25%, #e6e2d6 50%, #efece4 75%);
+}
+.cafe-card img.thumb-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.region-tag {
+  position: absolute; top: 12px; left: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--color-primary-strong);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+.cafe-card .meta { padding: 16px; }
+.cafe-card .meta h3 {
+  margin: 0 0 4px; font-size: 18px; font-weight: 500;
+  letter-spacing: -0.02px;
+}
+.cafe-card .detail-line {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--color-label-alt);
+}
+.rating { color: var(--color-caution); font-weight: 600; }
+
+/* --- Backdrop / detail panel --- */
+.backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: none;
+  z-index: 50;
+  animation: fadeIn 160ms ease;
+}
+.backdrop.open { display: block; }
+
+.detail-panel {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 548px;                       /* matches cafe column for symmetry */
+  background: var(--color-bg);        /* unify with index.html cream */
+  z-index: 110;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.12);
+  transform: translateX(100%);
+  transition: transform 240ms ease;
+  font-family: var(--font-sans);
+}
+.detail-panel.open { transform: translateX(0); }
+
+.detail-header {
+  padding: 20px 24px 16px;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  border-bottom: 1px solid var(--color-line);
+  flex-shrink: 0;
+}
+.detail-header h2 {
+  margin: 0; font-size: 22px; font-weight: 700;
+  letter-spacing: -1.5px;
+}
+.detail-header .sub { font-size: 13px; color: var(--color-label-alt); margin-top: 6px; }
+.icon-btn {
+  background: none; border: none; padding: 4px;
+  font-size: 22px; color: var(--color-label-alt);
+}
+
+.detail-body {
+  flex: 1;
+  min-height: 0;
+  padding: 16px 24px 24px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex; flex-direction: column; gap: 16px;
+}
+/* Sticky footer that always shows the Get Directions button */
+.detail-footer {
+  flex-shrink: 0;
+  padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-line);
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.05);
+}
+.detail-footer .btn-block { margin-top: 0; }
+.detail-body img.hero {
+  width: 100%; aspect-ratio: 16/10; object-fit: cover;
+  border-radius: var(--r-m);
+}
+.weather-box {
+  background: var(--color-bg);
+  border-radius: var(--r-m);
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 6px;
+  border: 1px solid var(--color-line-soft);
+}
+.weather-box .summary { font-size: 13px; font-weight: 500; }
+.weather-box .stats {
+  display: flex; flex-wrap: wrap; gap: 8px 12px;
+  font-size: 13px; color: var(--color-label-alt);
+}
+.info-row {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 14px; color: var(--color-label);
+}
+.info-row .ic { font-size: 18px; line-height: 1; min-width: 24px; }
+.facilities { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 8px 14px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  font-size: 13px; font-weight: 500;
+}
+.section-title {
+  margin: 8px 0 4px;
+  font-size: 15px; font-weight: 600;
+}
+.hours-list { font-size: 14px; }
+.hours-list .row {
+  display: flex; justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--color-line);
+}
+.hours-list .row.today { color: var(--color-caution); font-weight: 600; }
+.btn-block {
+  margin-top: 16px;
+  width: 100%;
+  background: var(--color-primary);
+  color: #fff; border: none;
+  border-radius: var(--r-s);
+  padding: 16px;
+  font-size: 15px; font-weight: 600;
+}
+.btn-block:hover { background: var(--color-primary-strong); }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* --- Filter drawer ---
+   Desktop: matches the cafe column width (548px) so the visual rhythm
+   between the list and the open filter panel is identical. */
+.filter-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: 548px; max-width: 100%;
+  background: var(--color-bg);          /* unify with index.html cream */
+  z-index: 70;
+  display: flex; flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 220ms ease;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.12);
+  font-family: var(--font-sans);
+}
+.filter-drawer.open { transform: translateX(0); }
+.drawer-header {
+  padding: 20px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--color-line);
+}
+.drawer-header h2 {
+  margin: 0; font-size: 20px; font-weight: 700;
+  letter-spacing: -1px;
+}
+.drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+.drawer-section-title {
+  margin: 0 0 12px;
+  font-size: 14px; font-weight: 700;
+  color: var(--color-label);
+}
+.drawer-body .drawer-section-title:not(:first-child) { margin-top: 28px; }
+
+.region-list {
+  list-style: none; margin: 0; padding: 0;
+}
+.region-list li {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 4px;
+  font-size: 15px;
+  border-bottom: 1px solid var(--color-line);
+  cursor: pointer;
+  transition: color 120ms ease;
+}
+.region-list li:hover { color: var(--color-primary-strong); }
+.region-list li.active {
+  color: var(--color-primary-strong);
+  font-weight: 600;
+}
+.region-list li.active .region-icon { color: var(--color-primary); }
+.region-icon { font-size: 14px; color: var(--color-label-alt); width: 18px; text-align: center; }
+
+#facility-list .chip {
+  cursor: pointer;
+  background: var(--color-surface);
+  border-color: transparent;
+  transition: background 120ms ease, color 120ms ease;
+}
+#facility-list .chip.active {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* "Open today" toggle — pill switch */
+.toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--color-line);
+  font-size: 15px;
+}
+.toggle-row .label { display: flex; align-items: center; gap: 10px; }
+.toggle-row .ic { color: var(--color-primary-strong); }
+.switch {
+  position: relative;
+  width: 42px; height: 24px;
+  background: var(--color-line);
+  border-radius: 999px;
+  transition: background 160ms ease;
+  cursor: pointer; flex-shrink: 0;
+}
+.switch::after {
+  content: '';
+  position: absolute; top: 2px; left: 2px;
+  width: 20px; height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 160ms ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+}
+.switch.on { background: var(--color-primary); }
+.switch.on::after { transform: translateX(18px); }
+
+/* Reactive result count under Facilities */
+.filter-result-count {
+  margin-top: 16px;
+  padding: 12px 14px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--r-s);
+  font-size: 14px; font-weight: 600;
+  color: var(--color-primary-strong);
+  text-align: center;
+}
+.filter-result-count.zero { color: var(--color-caution); }
+
+.drawer-footer {
+  padding: 16px 24px 24px;
+  border-top: 1px solid var(--color-line);
+  display: flex; gap: 12px;
+}
+.btn-ghost {
+  flex: 0 0 auto;
+  background: transparent;
+  color: var(--color-label-alt);
+  border: 1px solid var(--color-line);
+  border-radius: var(--r-s);
+  padding: 14px 18px;
+  font-size: 14px; font-weight: 600;
+}
+.btn-ghost:hover { color: var(--color-primary-strong); border-color: var(--color-primary); }
+.btn-block.compact { margin-top: 0; padding: 14px; flex: 1; }
+.btn-block:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* "Learn more" lazy-translate button on attraction cards */
+.btn-learn-more {
+  align-self: flex-start;
+  background: transparent;
+  color: var(--color-primary-strong);
+  border: 1px solid var(--color-line);
+  border-radius: var(--r-xs);
+  padding: 6px 12px;
+  font-size: 12px; font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: 2px;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+.btn-learn-more:hover:not(:disabled) {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+.btn-learn-more:disabled { opacity: 0.6; cursor: progress; }
+
+/* Loading state */
+.loading { padding: 32px; text-align: center; color: var(--color-label-alt); font-size: 14px; }
+
+
+/* ============================================================
+   Mobile Responsive Design (< 768px)
+   - Layout becomes vertical
+   - Cafe list = Bottom sheet
+   - Filter = Bottom drawer
+   - Detail = Bottom drawer (Updated!)
+   ============================================================ */
+@media (max-width: 768px) {
+  .intro-main { grid-template-columns: 1fr; padding: 24px; gap: 32px; min-height: auto; }
+  .intro-content { order: 2; text-align: center; }
+  .intro-content h1 { font-size: 36px; letter-spacing: -1.6px; }
+  .intro-content p { margin-left: auto; margin-right: auto; }
+  .intro-illustration { order: 1; min-height: 320px; }
+  .btn-primary { display: block; margin: 0 auto; }
+
+  .map-shell {
+    display: block;            /* drop the grid */
+    grid-template-columns: none;
+  }
+  .map-shell .header { width: 100%; border-bottom-right-radius: 0; }
+
+  /* Map fills the entire viewport as the background layer */
+  .map-canvas {
+    position: fixed; inset: 0;
+    z-index: 1;
+  }
+
+  /* 1. Browse List - Bottom Sheet
+     COLLAPSED by default: only the drag-handle + "Browse Café's" header is
+     visible (~76 px peek). Tap the top bar to slide the full sheet up. */
+  .aside {
+    position: fixed; left: 0; right: 0; bottom: 0; top: auto;
+    height: 70vh; max-height: 85vh;
+    border-left: none;
+    border-top: 1px solid var(--color-line);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -8px 24px rgba(0,0,0,0.08);
+    padding: 0 16px 20px;
+    z-index: 30;
+    transform: translateY(calc(100% - 76px));   /* ~handle + h2 only */
+    transition: transform 280ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .aside.expanded { transform: translateY(0); }
+  /* Make the whole top bar (handle + header) tappable to expand */
+  .aside .panel-header { cursor: pointer; }
+  .aside.dragging { transition: none; }
+  /* Allow vertical scroll on the inner list */
+  .entry-list { touch-action: pan-y; }
+
+  .drag-handle {
+    width: 100%;
+    padding: 12px 0 8px;
+    display: flex; justify-content: center;
+    cursor: grab;
+    flex-shrink: 0;
+    touch-action: none;            /* only the handle blocks default touch */
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .drag-handle::before {
+    content: '';
+    display: block;
+    width: 44px; height: 5px;
+    background: var(--color-line);
+    border-radius: 3px;
+    transition: background 120ms ease;
+  }
+  .drag-handle:active { cursor: grabbing; }
+  .drag-handle:active::before { background: var(--color-primary); }
+
+  .panel-header { padding-bottom: 8px; padding-top: 4px; }
+  .btn-filter { margin-bottom: 12px; }
+  .entry-list {
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .cafe-card { min-width: 0; max-width: none; }
+
+  /* 2. Detail Panel — Drawer (Bottom Sheet) */
+  .detail-panel {
+    top: auto; right: 0; left: 0; bottom: 0;
+    width: 100%;
+    height: 85vh; /* Occupies 85% of screen height */
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    transform: translateY(100%); /* Changed to slide up from the bottom (Y-axis) */
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.12);
+  }
+  .detail-panel.open {
+    transform: translateY(0); 
+  }
+  /* Add a top drag bar to the detail panel */
+  .detail-panel::before {
+    content: '';
+    display: block;
+    width: 40px; height: 4px;
+    background: var(--color-line);
+    border-radius: 2px;
+    margin: 12px auto 0;
+    flex-shrink: 0;
+  }
+  .detail-header {
+    padding-top: 12px; /* Reduce padding slightly to make room for the bar */
+  }
+
+  /* 3. Filter Drawer — Bottom Sheet */
+  .filter-drawer {
+    top: auto; right: 0; left: 0; bottom: 0;
+    width: 100%;
+    height: 80vh;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    transform: translateY(100%);
+    transition: transform 240ms cubic-bezier(0.32, 0.72, 0, 1);
+    touch-action: none;
+  }
+  .filter-drawer.open { transform: translateY(0); }
+  .filter-drawer.dragging { transition: none; }
+  .filter-drawer .drag-handle {
+    margin-top: 4px;
+  }
+}
+
+/* --- Coffee marker (used on every screen size) --- */
+.cafe-pin-svg {
+  width: 30px; height: 36px;
+  display: grid; place-items: center;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.35));
+  transition: opacity 200ms ease, transform 200ms ease;
+  cursor: pointer;
+}
+.cafe-pin-svg svg { width: 100%; height: 100%; }
+.cafe-pin-svg.dimmed { opacity: 0.18; }
+.cafe-pin-svg.highlighted { transform: scale(1.4); z-index: 1000 !important; }
