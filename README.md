@@ -1,6 +1,6 @@
 # NomadSpot Taiwan ☕
 
-> 台灣數位遊牧咖啡廳探索地圖 — A curated workspace discovery map for digital nomads in Taiwan.
+>  A curated workspace discovery map for digital nomads in Taiwan. - 台灣數位遊牧咖啡廳探索地圖
 
 ![NomadSpot Taiwan](public/assets/icons/NomadSpot%20TW.svg)
 
@@ -14,7 +14,7 @@ NomadSpot Taiwan is an interactive, multilingual web application that helps digi
 
 ---
 
-## 功能特色 / Features
+## Features
 
 - 🗺️ **Interactive Leaflet.js Map** — browse cafés by city or region with custom SVG map markers
 - 📊 **Work Index** — composite score based on Wi-Fi, seating, noise, power outlets, and hours
@@ -102,7 +102,7 @@ NomadSpot Taiwan is an interactive, multilingual web application that helps digi
 - Node.js `>= 18.x`
 - npm
 
-### 安裝 / Installation
+### Installation
 
 ```bash
 git clone https://github.com/<your-username>/NomadSpot-Taiwan.git
@@ -141,7 +141,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 授權 / License
+##  License
 
 This project is for personal and educational use. All café images and data are curated independently.
 
@@ -149,6 +149,7 @@ This project is for personal and educational use. All café images and data are 
 
 ## Acknowledgements
 
-Built with ☕ and 💻 by Victor, Lieselotte, Sophie, and Shelly.
+Design by Shelly and Sophie.
+Built with ☕ and 💻 by Lieselotte, Victor, Sophie, and Shelly.
 
 > *Find your spot. Do your best work.*
