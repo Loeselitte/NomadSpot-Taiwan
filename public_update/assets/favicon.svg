@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Favicon "lens" into the canonical brand artwork at /assets/index.svg.
+  We do NOT redraw or modify the original graphic — this file simply
+  declares a small viewBox window over the coffee mark in the source SVG
+  and renders the original image at its native 1920×1080 size inside it.
+  Edit `viewBox` below to retarget the lens; never touch index.svg.
+-->
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     viewBox="20 12 56 48"
+     width="64" height="64">
+  <image xlink:href="/assets/index.svg"
+         x="0" y="0" width="1920" height="1080"
+         preserveAspectRatio="xMinYMin meet"/>
+</svg>
