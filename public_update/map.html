@@ -8,14 +8,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="/styles.css?v=2" />
+  <link rel="stylesheet" href="styles.css?v=2" />
 </head>
 <body>
   <div class="map-shell">
     <header class="header">
       <a class="logo" href="/">
-        <span class="logo-mark"></span>
-        <span class="logo-text">NomadSpot <strong>Taiwan</strong></span>
+        <img class="logo-img" src="assets/icons/logo.svg" alt="NomadSpot Taiwan" />
       </a>
     </header>
 
@@ -26,7 +25,7 @@
     <aside class="aside">
       <div class="drag-handle" id="aside-drag" aria-label="Drag to expand"></div>
       <div class="panel-header">
-        <h2>Browse Café's</h2>
+        <h2>Browse Cafés</h2>
       </div>
       <button class="btn-filter" id="filter-btn">
         <span><span class="ic">⚙</span> Filter cafés</span>
@@ -50,16 +49,16 @@
     <div class="drawer-body">
       <h3 class="drawer-section-title">Availability</h3>
       <div class="toggle-row" id="open-today-row">
-        <span class="label"><span class="ic"><img src="/assets/icons/clock.svg" alt="Location Icon" width="16" height="16"></span> Open today</span>
+        <span class="label"><span class="ic"><img src="assets/icons/clock.svg" alt="Location Icon" width="16" height="16"></span> Open today</span>
         <span class="switch" id="open-today-switch" role="switch" aria-checked="false"></span>
       </div>
 
       <h3 class="drawer-section-title">Region</h3>
       <ul class="region-list" id="region-list">
-        <li data-region="North"><span class="region-icon"><img src="/assets/icons/north.svg" alt="Location Icon" width="16" height="16"></span> North</li>
-        <li data-region="Central"><span class="region-icon"><img src="/assets/icons/central.svg" alt="Location Icon" width="16" height="16"></span> Central</li>
-        <li data-region="South"><span class="region-icon"><img src="/assets/icons/south.svg" alt="Location Icon" width="16" height="16"></span> South</li>
-        <li data-region="East"><span class="region-icon"><img src="/assets/icons/east.svg" alt="Location Icon" width="16" height="16"></span> East</li>
+        <li data-region="North"><span class="region-icon"><img src="assets/icons/north2.svg" alt="Location Icon" width="16" height="16"></span> North</li>
+        <li data-region="Central"><span class="region-icon"><img src="assets/icons/central.svg" alt="Location Icon" width="16" height="16"></span> Central</li>
+        <li data-region="South"><span class="region-icon"><img src="assets/icons/south2.svg" alt="Location Icon" width="16" height="16"></span> South</li>
+        <li data-region="East"><span class="region-icon"><img src="assets/icons/east2.svg" alt="Location Icon" width="16" height="16"></span> East</li>
       </ul>
 
       <h3 class="drawer-section-title">Facilities</h3>
@@ -74,6 +73,6 @@
   </aside>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="/map.js"></script>
+  <script src="map.js"></script>
 </body>
 </html>
