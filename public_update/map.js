@@ -192,12 +192,12 @@ function renderYoubikeHTML(stations) {
     return `
       <div class="info-row" style="align-items:center; justify-content:space-between; border-bottom:1px dashed var(--color-line); padding:6px 0;">
         <div>
-          <div style="font-weight:500; font-size:13px;">🚲 ${displayName}</div>
+          <div style="font-weight:500; font-size:13px;"><img src="/assets/icons/bicycle.svg" alt="Bike" width="16" height="16" style="vertical-align:middle; margin-right:4px;"> ${displayName}</div>
           <div style="font-size:12px; color:var(--color-label-alt)">${dist} away</div>
         </div>
         <div style="text-align:right; font-size:12px;">
-          <div>Available Bikes: <strong style="color:${rentNum === 0 ? 'var(--color-caution)' : 'inherit'}">${rentNum}</strong></div>
-          <div>Available Slots for return: <strong style="color:${returnNum === 0 ? 'var(--color-caution)' : 'inherit'}">${returnNum}</strong></div>
+          <div><strong style="color:${rentNum === 0 ? 'var(--color-caution)' : 'inherit'}">${rentNum}</strong> bikes</div>
+          <div><strong style="color:${returnNum === 0 ? 'var(--color-caution)' : 'inherit'}">${returnNum}</strong> slots</div>
         </div>
       </div>`;
   }).join("");
@@ -209,7 +209,7 @@ function renderYoubikeHTML(stations) {
 
 async function loadCafes() {
   try {
-    const res = await fetch('/api/cafes'); 
+    const res = await fetch('/api/cafes');
     const data = await res.json();
     cafes = data.items || data; 
     renderList(cafes);
@@ -385,9 +385,9 @@ async function openDetail(rawId) {
 
         ${weatherBlock}
 
-        <div class="info-row"><span class="ic"><img src="/assets/icons/location.png" alt="Location" width="16" height="16"></span><span>${c.address || "No address provided"}</span></div>
-        ${c.instagram || c.instagram_url ? `<div class="info-row"><span class="ic"><img src="/assets/icons/instagram.png" alt="Instagram" width="16" height="16"></span><a href="${c.instagram_url || c.instagramUrl || '#'}" target="_blank" rel="noopener">${c.instagram || 'Instagram'}</a></div>` : ''}
-        ${c.phone ? `<div class="info-row"><span class="ic"><img src="/assets/icons/phone.png" alt="Phone" width="16" height="16"></span><a href="tel:${c.phone.replace(/\s/g, "")}">${c.phone}</a></div>` : ''}
+        <div class="info-row"><span class="ic"><img src="/assets/icons/location.svg" alt="Location" width="16" height="16"></span><span>${c.address || "No address provided"}</span></div>
+        ${c.instagram || c.instagram_url ? `<div class="info-row"><span class="ic"><img src="/assets/icons/Instagram.svg" alt="Instagram" width="16" height="16"></span><a href="${c.instagram_url || c.instagramUrl || '#'}" target="_blank" rel="noopener">${c.instagram || 'Instagram'}</a></div>` : ''}
+        ${c.phone ? `<div class="info-row"><span class="ic"><img src="/assets/icons/phone.svg" alt="Phone" width="16" height="16"></span><a href="tel:${c.phone.replace(/\s/g, "")}">${c.phone}</a></div>` : ''}
         ${c.notes ? `<div class="info-row"><span class="ic">📝</span><span>${c.notes}</span></div>` : ''}
 
         <div class="facilities">${facilitiesHTML}</div>
@@ -526,7 +526,7 @@ function makeDraggable(sheet, handle, { dismissOn = 'collapse' } = {}) {
 
 makeDraggable(aside, asideDrag, { dismissOn: 'collapse' });
 
-// Mobile: tapping the "Browse Café's" header bar also opens the sheet
+// Mobile: tapping the "Browse Cafés" header bar also opens the sheet
 document.querySelector('.aside .panel-header').addEventListener('click', () => {
   if (!isMobile()) return;
   aside.classList.toggle('expanded');
