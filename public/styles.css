@@ -51,11 +51,11 @@ button { font-family: inherit; cursor: pointer; }
    The source artwork is unmodified; we just pan the native 1920×1080
    image inside a 36×36 viewport to show the coffee glyph at top-left. */
 .logo-mark {
-  width: 36px; height: 36px;
-  background-image: url('/assets/index.svg');
+  width: 48px; height: 36px;
+  background-image: url('assets/index.svg');
   background-repeat: no-repeat;
-  background-size: 1920px 1080px;
-  background-position: -22px -14px;
+  background-size: 1440px 810px;
+  background-position: -15px -9px;
   flex-shrink: 0;
 }
 .logo-mark::before { content: none; }
@@ -117,7 +117,7 @@ button { font-family: inherit; cursor: pointer; }
   max-width: 720px;
   aspect-ratio: 800 / 1080;
   margin-left: auto;
-  background-image: url('/assets/index.svg');
+  background-image: url('assets/index.svg');
   background-repeat: no-repeat;
   background-position: right center;
   /* 1920 / 800 = 2.4 → render the SVG at 240% width so only the right
@@ -517,6 +517,27 @@ button { font-family: inherit; cursor: pointer; }
 
 
 /* ============================================================
+   Medium desktop (1101–1280px) — 2-col, reduce padding
+   ============================================================ */
+@media (max-width: 1280px) {
+  .intro-main { padding: 0 80px; gap: 48px; }
+  .intro-illustration { aspect-ratio: unset; min-height: 420px; max-height: 560px; background-position: 97% center; }
+}
+
+/* ============================================================
+   Tablet / small desktop (≤ 1100px) — switch to single column
+   Taiwan gets full width here so it stays large and centred
+   ============================================================ */
+@media (max-width: 1100px) {
+  .intro-main { grid-template-columns: 1fr; padding: 24px 60px; gap: 32px; min-height: auto; }
+  .intro-content { order: 2; text-align: center; }
+  .intro-content h1 { font-size: 46px; letter-spacing: -2px; }
+  .intro-content p { margin-left: auto; margin-right: auto; }
+  .intro-content a { display: block; }
+  .intro-illustration { order: 1; height: 460px; aspect-ratio: unset; min-height: unset; max-height: none; max-width: none; margin: 0 auto; background-position: right center; }
+}
+
+/* ============================================================
    Mobile Responsive Design (< 768px)
    - Layout becomes vertical
    - Cafe list = Bottom sheet
@@ -524,11 +545,11 @@ button { font-family: inherit; cursor: pointer; }
    - Detail = Bottom drawer (Updated!)
    ============================================================ */
 @media (max-width: 768px) {
-  .intro-main { grid-template-columns: 1fr; padding: 24px; gap: 32px; min-height: auto; }
+  .intro-main { grid-template-columns: 1fr; padding: 24px; gap: 24px; min-height: auto; }
   .intro-content { order: 2; text-align: center; }
   .intro-content h1 { font-size: 36px; letter-spacing: -1.6px; }
   .intro-content p { margin-left: auto; margin-right: auto; }
-  .intro-illustration { order: 1; min-height: 320px; }
+  .intro-illustration { order: 1; height: 320px; aspect-ratio: unset; min-height: unset; max-width: none; margin: 0 auto; background-position: right center; }
   .btn-primary { display: block; margin: 0 auto; }
 
   .map-shell {
@@ -649,6 +670,9 @@ button { font-family: inherit; cursor: pointer; }
   transition: opacity 200ms ease, transform 200ms ease;
   cursor: pointer;
 }
+.cafe-pin-svg svg { width: 100%; height: 100%; }
+.cafe-pin-svg.dimmed { opacity: 0.18; }
+.cafe-pin-svg.highlighted { transform: scale(1.4); z-index: 1000 !important; }
 .cafe-pin-svg svg { width: 100%; height: 100%; }
 .cafe-pin-svg.dimmed { opacity: 0.18; }
 .cafe-pin-svg.highlighted { transform: scale(1.4); z-index: 1000 !important; }
