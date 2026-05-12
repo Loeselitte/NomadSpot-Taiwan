@@ -196,8 +196,8 @@ function renderYoubikeHTML(stations) {
           <div style="font-size:12px; color:var(--color-label-alt)">${dist} away</div>
         </div>
         <div style="text-align:right; font-size:12px;">
-          <div>Available Bikes: <strong style="color:${rentNum === 0 ? 'var(--color-caution)' : 'inherit'}">${rentNum}</strong></div>
-          <div>Available Slots for return: <strong style="color:${returnNum === 0 ? 'var(--color-caution)' : 'inherit'}">${returnNum}</strong></div>
+          <div><strong style="color:${rentNum === 0 ? 'var(--color-caution)' : 'inherit'}">${rentNum}</strong>Bikes</div>
+          <div><strong style="color:${returnNum === 0 ? 'var(--color-caution)' : 'inherit'}">${returnNum}</strong>Slots</div>
         </div>
       </div>`;
   }).join("");
