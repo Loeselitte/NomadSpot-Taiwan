@@ -490,8 +490,7 @@ app.get('/api/tdx', async (req, res) => {
     .map(s => {
       const a = availMap.get(s.StationUID);
       return {
-        name_display: s.StationName?.En
-          ? `${s.StationName.En} `,
+        name_display: s.StationName?.En ?? "Unknown Station",
         distance: haversineMeters(parseFloat(lat), parseFloat(lng),
                                   s.StationPosition.PositionLat, s.StationPosition.PositionLon),
         available_rent:   a?.AvailableRentBikes ?? 0,
